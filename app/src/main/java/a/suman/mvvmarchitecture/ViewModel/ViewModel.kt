@@ -12,25 +12,18 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ViewModel(application: Application) : AndroidViewModel(application){
+class ViewModel(application: Application) : AndroidViewModel(application) {
+    val repository=Repository(application)
+    val listDataLive: MutableLiveData<List<DataClassRoom>> = MutableLiveData()
+    init {
+        repository.loadData().subscribe {
+            listDataLive.postValue(it)
+        }
+    }
 
-    val gsonConverterFactory: GsonConverterFactory = GsonConverterFactory.create()
 
-    val retrofit= Retrofit.Builder().
-        baseUrl("https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/").
-        addConverterFactory(gsonConverterFactory).addCallAdapterFactory(RxJava2CallAdapterFactory.create()).
-        build()
-    val networkCalls=retrofit.create(NetworkCalls::class.java)
 
-    val roomMethods = DatabaseRoom.createDatabase(application).getRoomMethods()
-
-    val repository=Repository(roomMethods, networkCalls)
-
-    val listDataLive:MutableLiveData<List<DataClassRoom>> =MutableLiveData()
-    fun getViewData(int: Int):MutableLiveData<List<DataClassRoom>>{
+    fun getViewData(int: Int) {
         repository.getData(int)
-
-        listDataLive.postValue(repository.listData)
-        return listDataLive
     }
 }

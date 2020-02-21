@@ -22,7 +22,8 @@ class MainActivity : AppCompatActivity(), InflateImageView {
         val rAdapter=rAdapter(this@MainActivity)
         viewModel= ViewModelProviders.of(this).get(ViewModel::class.java)
         button.setOnClickListener {
-            viewModel.getViewData(Integer.parseInt(editText.text.toString())).observe(this, Observer {words->words.let{rAdapter.setDat(it)}  })
+            viewModel.getViewData(Integer.parseInt(editText.text.toString()))
+            viewModel.listDataLive.observe(this, Observer {words->words.let{rAdapter.setDat(it)}  })
         recyclerView.adapter=rAdapter
     }
     }

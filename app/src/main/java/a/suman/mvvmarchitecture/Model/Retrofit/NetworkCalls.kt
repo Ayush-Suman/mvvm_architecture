@@ -11,6 +11,6 @@ import retrofit2.http.Query
 interface NetworkCalls {
 
     @GET("photos")
-    fun getData(@Query("sol") sol:Int, @Query("api_key") api_key: String="9CEiCDSukUbfXe9UCloBSrekqvvnipq9ezhrE4Ny"): Observable<DataClass>
+    fun getData(@Query("sol") sol:Int, @Query("api_key") api_key: String="9CEiCDSukUbfXe9UCloBSrekqvvnipq9ezhrE4Ny"): Single<DataClass>
 
 }
